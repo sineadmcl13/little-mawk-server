@@ -1,0 +1,15 @@
+{
+  "name": "little-mawk-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "~4.16.1",
+    "morgan": "~1.10.0",
+    "json-rules-engine": "~6.1.2",
+    "winston": "~3.3.3",
+    "jsonschema": "~1.4.0"
+  }
+}

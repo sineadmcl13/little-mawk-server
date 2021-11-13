@@ -1,0 +1,43 @@
+{
+  "rules": [
+    {
+      "ruleName": "rule1",
+      "request": {
+        "any": [
+          {
+            "compare": "endpoint",
+            "value": "/no",
+            "operator": "equal"
+          },
+          {
+            "compare": "endpoint",
+            "value": "/fail",
+            "operator": "equal"
+          }
+        ]
+      },
+      "response": {
+        "code": 400,
+        "body": "Server error response"
+      }
+    },
+    {
+      "ruleName": "rule2",
+      "request": {
+        "all": [
+          {
+            "compare": "endpoint",
+            "value": "/ok",
+            "operator": "equal"
+          }
+        ]
+      },
+      "response": {
+        "code": 200,
+        "body": "Mocked success response"
+      }
+    }
+  ]
+}
+
+
