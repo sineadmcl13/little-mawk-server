@@ -1,6 +1,6 @@
 const express = require('./services/app')
 const app = express()
-const port = 3000
+const port = 8080
 const morgan = require('morgan');
 const logger = require('./config/logging');
 

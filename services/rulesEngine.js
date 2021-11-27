@@ -1,12 +1,11 @@
 //this will read the json file into the ruleConfig object at startup
 const rulesConfig = require('../config/rules.json')
 const { Engine } = require('json-rules-engine')
-let rulesEngine = new Engine()
+const rulesEngine = new Engine()
 const logger = require('../config/logging');
 const Validator = require('jsonschema').Validator;
 
-
-var rules = {
+const rules = {
   "id": "/Rules",
   "type": "object",
   "properties": {
@@ -18,7 +17,7 @@ var rules = {
   "additionalProperties": false
 };
 
-var rule = {
+const rule = {
   "id": "/Rule",
   "type": "object",
   "properties": {
@@ -35,7 +34,7 @@ var rule = {
   "additionalProperties": false
 };
 
-var request = {
+const request = {
   "id": "/Request",
   "type": "object",
   "properties": { 
@@ -55,7 +54,7 @@ var request = {
   ]}
 };
 
-var requestCondition = {
+const requestCondition = {
   "id": "/RequestCondition",
   "type": "object",
   "properties": {
@@ -66,7 +65,7 @@ var requestCondition = {
   "additionalProperties": false
 }
 
-var response = {
+const response = {
   "id": "/Response",
   "type": "object",
   "properties": {
@@ -112,12 +111,11 @@ function addParsedRules() {
       })
     }
 
-    console.log(JSON.stringify(newRule, null, 2))
+    logger.info(JSON.stringify(newRule, null, 2))
     rulesEngine.addRule( newRule )
   });
 
 }
-
 
 function addDefaultErrorRule() { 
   rulesEngine.addRule({
@@ -145,11 +143,11 @@ v.addSchema(response, 'Response');
 var validationResult = v.validate(rulesConfig, rules);
 
 if (validationResult.errors.length > 0) { 
-  console.log("Failed to parse rules.");
-  console.log(validationResult.errors);
+  logger.err("Failed to parse rules.");
+  logger.err(validationResult.errors);
   addDefaultErrorRule()
 } else {
-  console.log("Rules parsed a-ok")
+  logger.info("Rules parsed a-ok")
   addParsedRules()
 }
 

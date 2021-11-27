@@ -27,7 +27,7 @@
         "all": [
           {
             "compare": "endpoint",
-            "value": "/ok",
+            "value": "/status",
             "operator": "equal"
           }
         ]

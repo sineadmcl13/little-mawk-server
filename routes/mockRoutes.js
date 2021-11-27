@@ -4,7 +4,7 @@ const rulesEngine = require('../services/rulesEngine')
 const logger = require('../config/logging');
 
 mockRoutes.get('/*', function(req, res) {
-    logger.info('Received request from ' + req.path)
+    logger.info(`Received request from ${req.path}`)
     let facts = {
         endpoint: req.path
     }
@@ -13,20 +13,20 @@ mockRoutes.get('/*', function(req, res) {
     .then(( ruleResults ) => {
         
         ruleResults.failureResults.forEach(failureResult => {
-            logger.debug('Failed to match rule: ' + failureResult.name)
+            logger.debug(`Failed to match rule: ${failureResult.name}`)
         })
 
         ruleResults.results.forEach(result => {
-            logger.debug('Correctly matched rule: ' + result.name)
+            logger.debug(`Correctly matched rule: ${result.name}`)
         })
         
         ruleResults.results.map(result => {
-            logger.info('Returning response from rule: ' + result.name)
+            logger.info(`Returning response from rule: ${result.name}`)
             res.status(result.event.params.code).send(result.event.params.body)
         });
 
     })
-    .catch(err => console.log("Promise Reject: " + err));
+    .catch(err => logger.err(`Promise Reject: ${err}`));
 });
 
 
