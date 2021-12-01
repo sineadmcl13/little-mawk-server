@@ -6,88 +6,108 @@ const logger = require('../config/logging');
 const Validator = require('jsonschema').Validator;
 
 const rules = {
-  "id": "/Rules",
-  "type": "object",
-  "properties": {
-    "rules": {
-      "type": "array",
-      "items": {"$ref": "/Rule"}
+  id: "/Rules",
+  type: "object",
+  properties: {
+    rules: {
+      type: "array",
+      items: {
+        $ref: "/Rule"
+      }
     }
   },
-  "additionalProperties": false
-};
+  additionalProperties: false
+}
 
 const rule = {
-  "id": "/Rule",
-  "type": "object",
-  "properties": {
-    "ruleName": {"type": "string"},
-    "request": {
-      "type": "object",
-      "$ref": "/Request"
+  id: "/Rule",
+  type: "object",
+  properties: {
+    ruleName: {
+      type: "string"
     },
-    "response" : {
-      "$ref": "/Response",
-      "required": true
+    request: {
+      type: "object",
+      $ref: "/Request"
+    },
+    response : {
+      $ref: "/Response",
+      required: true
     }
   },
-  "additionalProperties": false
+  additionalProperties: false
 };
 
 const request = {
-  "id": "/Request",
-  "type": "object",
-  "properties": { 
-    "anyOf" : [
+  id: "/Request",
+  type: "object",
+  properties: { 
+    anyOf : [
     {
-      "any": {
-        "type": "array",
-        "items": {"$ref": "/RequestCondition"}
+      any: {
+        type: "array",
+        items: {
+          $ref: "/RequestCondition"
+        }
       }
     },
     {
-      "all" : {
-        "type": "array",
-        "items": {"$ref": "/RequestConditon"}
+      all : {
+        type: "array",
+        items: {
+          $ref: "/RequestConditon"
+        }
       }
     }
   ]}
 };
 
 const requestCondition = {
-  "id": "/RequestCondition",
-  "type": "object",
-  "properties": {
-    "compare": {"type": "string"},
-    "value": {"type": "string"},
-    "operator": {"type": "string"}
+  id: "/RequestCondition",
+  type: "object",
+  properties: {
+    compare: {
+      type: "string"
+    },
+    value: {
+      type: "string"
+    },
+    operator: {
+      type: "string"
+    }
   },
-  "additionalProperties": false
+  additionalProperties: false
 }
 
 const response = {
-  "id": "/Response",
-  "type": "object",
-  "properties": {
-    "code": {"type": "integer"},
-    "body": {"type": "string"}
+  id: "/Response",
+  type: "object",
+  properties: {
+    code: {
+      type: "integer"
+    },
+    body: {
+      type: "string"
+    }
   },
-  "additionalProperties": false
+  additionalProperties: false
 };
 
 
 function addParsedRules() { 
   rulesConfig.rules.forEach( pr => {
-    let newRule = {}
-    newRule.name = pr.ruleName
-    newRule.event = {
-      type: 'response',
-      params: {
-        code: pr.response.code,
-        body: pr.response.body
-       }
-    } 
-    newRule.conditions = {}
+    let newRule = {
+      name: pr.ruleName,
+      event: {
+        type: 'response',
+        params: {
+          code: pr.response.code,
+          body: pr.response.body
+         }
+      },
+      conditions: {}
+    }
+    
 
     if (typeof pr.request.all !== 'undefined') {
       newRule.conditions.all = []
