@@ -2,96 +2,8 @@
 const rulesConfig = require('../config/rules.json')
 const { Engine } = require('json-rules-engine')
 const rulesEngine = new Engine()
+const validator = require('./rulesValidator')
 const logger = require('../config/logging');
-const Validator = require('jsonschema').Validator;
-
-const rules = {
-  id: "/Rules",
-  type: "object",
-  properties: {
-    rules: {
-      type: "array",
-      items: {
-        $ref: "/Rule"
-      }
-    }
-  },
-  additionalProperties: false
-}
-
-const rule = {
-  id: "/Rule",
-  type: "object",
-  properties: {
-    ruleName: {
-      type: "string"
-    },
-    request: {
-      type: "object",
-      $ref: "/Request"
-    },
-    response : {
-      $ref: "/Response",
-      required: true
-    }
-  },
-  additionalProperties: false
-};
-
-const request = {
-  id: "/Request",
-  type: "object",
-  properties: { 
-    anyOf : [
-    {
-      any: {
-        type: "array",
-        items: {
-          $ref: "/RequestCondition"
-        }
-      }
-    },
-    {
-      all : {
-        type: "array",
-        items: {
-          $ref: "/RequestConditon"
-        }
-      }
-    }
-  ]}
-};
-
-const requestCondition = {
-  id: "/RequestCondition",
-  type: "object",
-  properties: {
-    compare: {
-      type: "string"
-    },
-    value: {
-      type: "string"
-    },
-    operator: {
-      type: "string"
-    }
-  },
-  additionalProperties: false
-}
-
-const response = {
-  id: "/Response",
-  type: "object",
-  properties: {
-    code: {
-      type: "integer"
-    },
-    body: {
-      type: "string"
-    }
-  },
-  additionalProperties: false
-};
 
 
 function addParsedRules() { 
@@ -155,21 +67,11 @@ function addDefaultErrorRule() {
   })
 }
 
-// https://github.com/tdegrunt/jsonschema/blob/master/examples/ref.js
-var v = new Validator();
-v.addSchema(rule, '/Rule');
-v.addSchema(request, 'Request');
-v.addSchema(response, 'Response');
-var validationResult = v.validate(rulesConfig, rules);
 
-if (validationResult.errors.length > 0) { 
-  logger.err("Failed to parse rules.");
-  logger.err(validationResult.errors);
-  addDefaultErrorRule()
+if(validator.isRuleSetValid(rulesConfig)){
+  addParsedRules();
 } else {
-  logger.info("Rules parsed a-ok")
-  addParsedRules()
+  addDefaultErrorRule();
 }
-
 
 module.exports = rulesEngine;

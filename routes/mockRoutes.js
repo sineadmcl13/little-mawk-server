@@ -26,7 +26,7 @@ mockRoutes.get('/*', function(req, res) {
         });
 
     })
-    .catch(err => logger.err(`Promise Reject: ${err}`));
+    .catch(err => logger.error(`Promise Reject: ${err}`));
 });
 
 

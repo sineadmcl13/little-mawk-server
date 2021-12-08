@@ -1,5 +1,6 @@
 const winston = require('winston');
-// creates a new Winston Logger
+
+// create a new Winston Logger
 const logger = new winston.createLogger({
   level: 'debug',
   transports: [
