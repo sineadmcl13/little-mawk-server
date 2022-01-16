@@ -1,17 +1,24 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, printf, colorize, simple } = format;
 
-// create a new Winston Logger
-const logger = new winston.createLogger({
+const customFormat = printf(({ level, message, timestamp }) => {
+  return `${timestamp}: ${level}: ${message}`;
+});
+
+const logger = createLogger({
   level: 'debug',
   transports: [
-    new winston.transports.File({ 
+    new transports.File({ 
       filename: './.logs/littlemawk.log', 
-      format: winston.format.simple()
+      format: combine(
+        timestamp(),
+        customFormat
+      )
     }),
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
+    new transports.Console({
+      format: combine(
+        colorize(),
+        simple()
       )
     })
   ],

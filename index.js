@@ -4,8 +4,13 @@ const port = 8080
 const morgan = require('morgan');
 const logger = require('./config/logging');
 
-//FIXME: this doesnt seem to be writing to file yet 
-app.use(morgan("combined", { stream: logger.stream.write }));
+//using the logger and its configured transports, to save the logs created by Morgan
+const myStream = {
+  write: (text) => {
+      logger.info(text)
+  }
+}
+app.use(morgan('combined', { stream: myStream }));
 
 app.use("/", require('./routes/mockRoutes'))
 

@@ -9,24 +9,29 @@ mockRoutes.get('/*', function(req, res) {
         endpoint: req.path
     }
 
-    rulesEngine.run(facts)
-    .then(( ruleResults ) => {
+    rulesEngine
+        .run(facts)
+        .then(( ruleResults ) => {
         
-        ruleResults.failureResults.forEach(failureResult => {
-            logger.debug(`Failed to match rule: ${failureResult.name}`)
-        })
+            ruleResults.failureResults.forEach(failureResult => {
+                logger.debug(`Failed to match rule: ${failureResult.name}`)
+            })
 
-        ruleResults.results.forEach(result => {
-            logger.debug(`Correctly matched rule: ${result.name}`)
-        })
-        
-        ruleResults.results.map(result => {
-            logger.info(`Returning response from rule: ${result.name}`)
-            res.status(result.event.params.code).send(result.event.params.body)
-        });
+            ruleResults.results.forEach(result => {
+                logger.debug(`Correctly matched rule: ${result.name}`)
+            })
 
-    })
-    .catch(err => logger.error(`Promise Reject: ${err}`));
+            if(ruleResults.results.length == 0){
+                logger.info(`No matching rules found for request: ${req.path}`)
+                res.status(500).send(`No matching rule found for ${req.path}`)
+            }
+            
+            ruleResults.results.map(result => {
+                logger.info(`Returning response from rule: ${result.name}`)
+                res.status(result.event.params.code).send(result.event.params.body)
+            });
+        })
+        .catch(err => logger.error(`Promise Reject: ${err}`));
 });
 
 
