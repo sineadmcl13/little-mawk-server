@@ -117,3 +117,24 @@ exports.testInputMultipleRuleWithAny = {
     }
   ]
 }
+
+exports.testRequestCompareInvalidValue = {
+  rules: [
+    {
+      ruleName: "rule1",
+      request: {
+        any: [
+          {
+            compare: "body",
+            value: "/no",
+            operator: "equal"
+          }
+        ]
+      },
+      response: {
+        code: 400,
+        body: "Server error response"
+      }
+    },
+  ]
+}

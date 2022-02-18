@@ -30,8 +30,12 @@ describe("rulesValidator", () => {
         expect(rulesValidator.isRuleSetValid("{}")).to.be.false;
       });
   
+      it("should fail if 'compare' field is not a valid type", () => {
+        expect(rulesValidator.isRuleSetValid(testInputValues.testRequestCompareInvalidValue)).to.be.false;
+        //TODO check the logged validation failure
+      });
+
       it("should fail if multiple 'any' blocks use same compare value");
-      it("should fail if 'compare' field is not a valid type");
       it("should fail if 'operator' field is not a valid type");
       it("should fail if 'response' object does not contain required fields");
 

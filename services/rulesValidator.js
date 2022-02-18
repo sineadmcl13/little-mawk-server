@@ -37,25 +37,14 @@ const rule = {
 const request = {
   id: "/Request",
   type: "object",
-  properties: { 
-    anyOf : [
-    {
-      any: {
-        type: "array",
+  patternProperties: { 
+    "any|all": {
+      type: "array",
         items: {
           $ref: "/RequestCondition"
         }
-      }
-    },
-    {
-      all : {
-        type: "array",
-        items: {
-          $ref: "/RequestConditon"
-        }
-      }
     }
-  ]}
+  }
 };
 
 const requestCondition = {
@@ -63,13 +52,18 @@ const requestCondition = {
   type: "object",
   properties: {
     compare: {
-      type: "string"
+      "enum": [
+        "endpoint"
+      ],
+      required: true
     },
     value: {
-      type: "string"
+      type: "string",
+      required: true
     },
     operator: {
-      type: "string"
+      type: "string",
+      required: true
     }
   },
   additionalProperties: false
@@ -92,8 +86,9 @@ const response = {
 // https://github.com/tdegrunt/jsonschema/blob/master/examples/ref.js
 const v = new Validator();
 v.addSchema(rule, '/Rule');
-v.addSchema(request, 'Request');
-v.addSchema(response, 'Response');
+v.addSchema(request, '/Request');
+v.addSchema(requestCondition, '/RequestCondition')
+v.addSchema(response, '/Response');
 
 
 function isRuleSetValid(rulesToValidate){
