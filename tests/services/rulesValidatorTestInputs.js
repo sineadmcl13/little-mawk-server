@@ -138,3 +138,24 @@ exports.testRequestCompareInvalidValue = {
     },
   ]
 }
+
+exports.testRequestOperatorInvalidValue = {
+  rules: [
+    {
+      ruleName: "rule1",
+      request: {
+        any: [
+          {
+            compare: "endpoint",
+            value: "/no",
+            operator: "not equal"
+          }
+        ]
+      },
+      response: {
+        code: 400,
+        body: "Server error response"
+      }
+    }
+  ]
+}

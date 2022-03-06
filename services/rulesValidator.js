@@ -1,4 +1,4 @@
-const { Validator } = require('jsonschema');
+const { Validator, ValidationError } = require('jsonschema');
 const logger = require('../config/logging');
 
 const rules = {
@@ -62,7 +62,9 @@ const requestCondition = {
       required: true
     },
     operator: {
-      type: "string",
+      "enum": [
+        "equal"
+      ],
       required: true
     }
   },
@@ -95,7 +97,7 @@ function isRuleSetValid(rulesToValidate){
   let validationResult = v.validate(rulesToValidate, rules);
   if (validationResult.errors.length > 0) { 
     logger.error("Failed to parse rules.");
-    logger.error(validationResult.errors);
+    validationResult.errors.forEach(err => logger.error(err.toString()))
     return false;
   } else {
     logger.info("Rules parsed a-ok")
