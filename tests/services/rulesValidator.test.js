@@ -51,8 +51,19 @@ describe("rulesValidator", () => {
         done();
       });
 
+      it("should fail if 'response' object does not contain required body field", (done) => {
+        expect(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingBodyField)).to.be.false;
+        expect(spy.calledWith('instance.rules[0].response.body is required'));
+        done();
+      });
+
+      it("should fail if 'response' object does not contain required code field", (done) => {
+        expect(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingCodeField)).to.be.false;
+        expect(spy.calledWith('instance.rules[0].response.code is required'));
+        done();
+      });
+
       it("should fail if multiple 'any' blocks use same compare value");
-      it("should fail if 'response' object does not contain required fields");
 
     })    
   })

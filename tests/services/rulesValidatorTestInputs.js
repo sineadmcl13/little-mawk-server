@@ -159,3 +159,43 @@ exports.testRequestOperatorInvalidValue = {
     }
   ]
 }
+
+exports.testResponseMissingBodyField = {
+    rules: [
+    {
+      ruleName: "rule1",
+      request: {
+        any: [
+          {
+            compare: "endpoint",
+            value: "/no",
+            operator: "equal"
+          }
+        ]
+      },
+      response: {
+        code: 400
+      }
+    }
+  ]
+}
+
+exports.testResponseMissingCodeField = {
+  rules: [
+  {
+    ruleName: "rule1",
+    request: {
+      any: [
+        {
+          compare: "endpoint",
+          value: "/no",
+          operator: "equal"
+        }
+      ]
+    },
+    response: {
+      body: "test response body"
+    }
+  }
+]
+}

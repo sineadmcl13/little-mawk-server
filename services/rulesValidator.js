@@ -1,4 +1,4 @@
-const { Validator, ValidationError } = require('jsonschema');
+const { Validator } = require('jsonschema');
 const logger = require('../config/logging');
 
 const rules = {
@@ -76,10 +76,12 @@ const response = {
   type: "object",
   properties: {
     code: {
-      type: "integer"
+      type: "integer",
+      required: true
     },
     body: {
-      type: "string"
+      type: "string",
+      required: true
     }
   },
   additionalProperties: false
