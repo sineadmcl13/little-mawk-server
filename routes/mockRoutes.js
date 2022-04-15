@@ -1,6 +1,7 @@
 const express = require('express')
 const mockRoutes = express.Router()
 const rulesEngine = require('../services/rulesEngine')
+const requestRules = rulesEngine.build();
 const logger = require('../config/logging');
 
 mockRoutes.get('/*', function(req, res) {
@@ -9,7 +10,7 @@ mockRoutes.get('/*', function(req, res) {
         endpoint: req.path
     }
 
-    rulesEngine
+    requestRules
         .run(facts)
         .then(( ruleResults ) => {
         

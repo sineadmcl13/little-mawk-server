@@ -1,12 +1,12 @@
 //this will read the json file into the ruleConfig object at startup
-const rulesConfig = require('../config/rules.json')
+const defaultRules = require('../config/rules.json')
 const { Engine } = require('json-rules-engine')
 const rulesEngine = new Engine()
 const validator = require('./rulesValidator')
 const logger = require('../config/logging');
 
 
-function addParsedRules() { 
+function addParsedRules(rulesConfig) { 
   rulesConfig.rules.forEach( pr => {
     let newRule = {
       name: pr.ruleName,
@@ -68,10 +68,13 @@ function addDefaultErrorRule() {
 }
 
 
-if(validator.isRuleSetValid(rulesConfig)){
-  addParsedRules();
-} else {
-  addDefaultErrorRule();
+function build(rules=defaultRules){
+  if(validator.isRuleSetValid(rules)){
+    addParsedRules(rules);
+  } else {
+    addDefaultErrorRule();
+  }
+  return rulesEngine;
 }
 
-module.exports = rulesEngine;
+module.exports.build = build;
