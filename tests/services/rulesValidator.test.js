@@ -62,9 +62,6 @@ describe("rulesValidator", () => {
         expect(spy.calledWith('instance.rules[0].response.code is required'));
         done();
       });
-
-      it("should fail if multiple 'any' blocks use same compare value");
-
     })    
   })
 });

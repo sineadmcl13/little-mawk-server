@@ -26,14 +26,11 @@ let configuredTransports = [
   consoleTransport
 ]
 
-if(process.env.TEST){
-  //Don't write to file when running tests
-  configuredTransports = [ consoleTransport ]
-}
-
 const logger = createLogger({
   level: 'debug',
   transports: configuredTransports,
-  exitOnError: false
+  exitOnError: false,
+  silent: process.env.TEST === 'true'
 });
+
 module.exports = logger;
