@@ -1,5 +1,5 @@
 const chai = require('chai');
-const expect = chai.expect;
+const assert = chai.assert;
 const rulesValidator = require('../../services/rulesValidator');
 const testInputValues = require('./rulesValidatorTestInputs')
 const sinon = require('sinon');
@@ -18,48 +18,51 @@ describe("rulesValidator", () => {
     
       tests.forEach(({description, input}) => {
         it(`${description}`, ()=> {
-          expect(rulesValidator.isRuleSetValid(input)).to.be.true;
+          assert.isTrue(rulesValidator.isRuleSetValid(input));
         });
       });
     })
 
     context("invalid test inputs", ()=>{
 
+      let spy;
 
-      let spy = sinon.spy(logger, 'error')
-      afterEach(function() {
+      beforeEach(() => {
+        spy = sinon.spy(logger, 'error')
+      })
+
+      afterEach(()=> {
         spy.restore();
       });
 
       it("should fail for invalid json format input", ()=> {
-        expect(rulesValidator.isRuleSetValid("{\"someField\": \"noClosingBracket\"")).to.be.false;
+        assert.isFalse(rulesValidator.isRuleSetValid("{\"someField\": \"noClosingBracket\""));
       });
   
       it("should fail for empty valid json input", ()=> {
-        expect(rulesValidator.isRuleSetValid("{}")).to.be.false;
+        assert.isFalse(rulesValidator.isRuleSetValid("{}"));
       });
   
-      it("should fail if 'compare' field is not a valid type", (done) => {
-        expect(rulesValidator.isRuleSetValid(testInputValues.testRequestCompareInvalidValue)).to.be.false;
-        expect(spy.calledWith('instance.rules[0].request.any[0].compare is not one of enum values: endpoint'));
-        done();
+      it("should fail if 'compare' field is not a valid type", () => {
+        assert.isFalse(rulesValidator.isRuleSetValid(testInputValues.testRequestCompareInvalidValue));
+        assert.isTrue(spy.calledWith('instance.rules[0].request.any[0].compare is not one of enum values: endpoint'));
       });
 
       it("should fail if 'operator' field is not a valid type", (done) => {
-        expect(rulesValidator.isRuleSetValid(testInputValues.testRequestOperatorInvalidValue)).to.be.false;
-        expect(spy.calledWith('instance.rules[0].request.any[0].operator is not one of enum values: equal'));
+        assert.isFalse(rulesValidator.isRuleSetValid(testInputValues.testRequestOperatorInvalidValue));
+        assert.isTrue(spy.calledWith('instance.rules[0].request.any[0].operator is not one of enum values: equal'));
         done();
       });
 
       it("should fail if 'response' object does not contain required body field", (done) => {
-        expect(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingBodyField)).to.be.false;
-        expect(spy.calledWith('instance.rules[0].response.body is required'));
+        assert.isFalse(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingBodyField));
+        assert.isTrue(spy.calledWith('instance.rules[0].response.body is required'));
         done();
       });
 
       it("should fail if 'response' object does not contain required code field", (done) => {
-        expect(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingCodeField)).to.be.false;
-        expect(spy.calledWith('instance.rules[0].response.code is required'));
+        assert.isFalse(rulesValidator.isRuleSetValid(testInputValues.testResponseMissingCodeField));
+        assert.isTrue(spy.calledWith('instance.rules[0].response.code is required'));
         done();
       });
     })    
