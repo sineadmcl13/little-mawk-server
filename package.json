@@ -1,21 +1,21 @@
 {
   "name": "little-mawk-server",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node index.js",
     "test": "TEST=true mocha './tests/**/*.test.js'"
   },
   "dependencies": {
-    "express": "~4.16.1",
+    "express": "~4.18.2",
     "json-rules-engine": "~6.1.2",
-    "jsonschema": "~1.4.0",
+    "jsonschema": "~1.4.1",
     "morgan": "~1.10.0",
-    "winston": "~3.3.3"
+    "winston": "~3.8.2"
   },
   "devDependencies": {
-    "chai": "~4.3.4",
-    "mocha": "~9.1.4",
-    "sinon": "~13.0.1"
+    "chai": "~4.3.7",
+    "mocha": "~10.2.0",
+    "sinon": "~15.0.1"
   }
 }
