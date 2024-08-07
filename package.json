@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "express": "~4.19.2",
-    "json-rules-engine": "~6.1.2",
+    "json-rules-engine": "~6.5.0",
     "jsonschema": "~1.4.1",
     "morgan": "~1.10.0",
-    "winston": "~3.8.2"
+    "winston": "~3.13.1"
   },
   "devDependencies": {
     "chai": "~5.1.1",
